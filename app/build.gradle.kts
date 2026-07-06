@@ -38,6 +38,22 @@ android {
 }
 
 dependencies {
+
+
+    //Paging 3
+    implementation("androidx.paging:paging-runtime:3.5.0")
+    implementation("androidx.paging:paging-compose:3.5.0")
+
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    //Gson
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+
+    //ViewModel Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.11.0")
+
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)
