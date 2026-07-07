@@ -7,9 +7,8 @@ import com.enterprise.paging3.remotedatasource.retrofit.RetrofitClient
 import com.enterprise.paging3.repository.PostRepository
 
 
-class PostViewModel : ViewModel() {
+class PostViewModel(private val repository: PostRepository) : ViewModel() {
 
-    private val repository = PostRepository(RetrofitClient.api)
 
     val posts = repository
         .getPosts()

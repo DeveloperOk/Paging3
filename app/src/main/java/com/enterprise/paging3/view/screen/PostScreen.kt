@@ -17,20 +17,35 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.retain.retain
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.enterprise.paging3.remotedatasource.retrofit.RetrofitClient
+import com.enterprise.paging3.repository.PostRepository
 import com.enterprise.paging3.ui.theme.ListRowBorder
 import com.enterprise.paging3.viewmodel.PostViewModel
+import com.enterprise.paging3.viewmodel.PostViewModelFactory
 
 @Composable
 fun PostScreen(
-    viewModel: PostViewModel = viewModel()
 ) {
+
+    val context = LocalContext.current
+
+    val repository = retain {
+        PostRepository(RetrofitClient.getRetrofitPostApi(context = context))
+    }
+
+    val viewModel: PostViewModel = viewModel(
+        factory = PostViewModelFactory(repository = repository)
+    )
+
     val posts = viewModel.posts.collectAsLazyPagingItems()
 
     when (val refreshState = posts.loadState.refresh) {
@@ -53,7 +68,7 @@ fun PostScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = refreshState.error.localizedMessage
+                        text = refreshState.error.message
                             ?: "Something went wrong"
                     )
 
@@ -140,7 +155,7 @@ fun PostScreen(
                                 ) {
 
                                     Text(
-                                        appendState.error.localizedMessage
+                                        appendState.error.message
                                             ?: "Failed to load more"
                                     )
 

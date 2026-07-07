@@ -14,8 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.enterprise.paging3.remotedatasource.retrofit.RetrofitClient
+import com.enterprise.paging3.repository.PostRepository
 import com.enterprise.paging3.ui.theme.Paging3Theme
 import com.enterprise.paging3.view.screen.PostScreen
+import com.enterprise.paging3.viewmodel.PostViewModel
+import com.enterprise.paging3.viewmodel.PostViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +45,6 @@ fun Paging3App(){
             verticalArrangement = Arrangement.Center){
 
             PostScreen()
-
 
         }
     }
