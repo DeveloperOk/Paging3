@@ -4,6 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.enterprise.paging3.model.Post
 import com.enterprise.paging3.remotedatasource.retrofit.PostApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class PostPagingSource(
     private val api: PostApi
@@ -17,10 +19,12 @@ class PostPagingSource(
 
             val page = params.key ?: 1
 
-            val posts = api.getPosts(
-                page = page,
-                limit = params.loadSize
-            )
+            val posts = withContext(Dispatchers.IO){
+                api.getPosts(
+                    page = page,
+                    limit = params.loadSize
+                )
+            }
 
             LoadResult.Page(
                 data = posts,

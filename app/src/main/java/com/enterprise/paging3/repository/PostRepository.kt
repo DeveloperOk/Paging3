@@ -6,7 +6,9 @@ import androidx.paging.PagingData
 import com.enterprise.paging3.model.Post
 import com.enterprise.paging3.paging.PostPagingSource
 import com.enterprise.paging3.remotedatasource.retrofit.PostApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 
 
 class PostRepository(
@@ -25,6 +27,6 @@ class PostRepository(
             pagingSourceFactory = {
                 PostPagingSource(api)
             }
-        ).flow
+        ).flow.flowOn(Dispatchers.IO)
     }
 }
