@@ -22,11 +22,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.enterprise.paging3.R
 import com.enterprise.paging3.remotedatasource.retrofit.RetrofitClient
+import com.enterprise.paging3.remotedatasource.retrofit.exception.NoInternetConnectionException
 import com.enterprise.paging3.repository.PostRepository
 import com.enterprise.paging3.ui.theme.ListRowBorder
 import com.enterprise.paging3.viewmodel.PostViewModel
@@ -67,9 +70,15 @@ fun PostScreen(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+
+                    var errorMessage: String = stringResource(R.string.general_error_message)
+
+                    if(refreshState.error is NoInternetConnectionException){
+                        errorMessage = refreshState.error.message?:errorMessage
+                    }
+
                     Text(
-                        text = refreshState.error.message
-                            ?: "Something went wrong"
+                        text = errorMessage
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -77,7 +86,7 @@ fun PostScreen(
                     Button(colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                         onClick = { posts.retry() }
                     ) {
-                        Text("Retry")
+                        Text(text = stringResource(R.string.button_retry))
                     }
                 }
             }
@@ -154,10 +163,15 @@ fun PostScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
 
-                                    Text(
-                                        appendState.error.message
-                                            ?: "Failed to load more"
-                                    )
+
+                                    var errorMessage: String = stringResource(R.string.error_message_failed_to_load_more)
+
+                                    if(appendState.error is NoInternetConnectionException){
+                                        errorMessage = appendState.error.message?:errorMessage
+                                    }
+
+
+                                    Text( text = errorMessage )
 
                                     Spacer(
                                         modifier = Modifier.height(8.dp)
@@ -166,7 +180,7 @@ fun PostScreen(
                                     Button(colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                                         onClick = { posts.retry() }
                                     ) {
-                                        Text("Retry")
+                                        Text(text = stringResource(R.string.button_retry))
                                     }
                                 }
                             }
