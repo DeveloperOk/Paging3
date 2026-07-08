@@ -40,9 +40,10 @@ fun PostScreen(
 ) {
 
     val context = LocalContext.current
+    val applicationContext = context.applicationContext
 
     val repository = retain {
-        PostRepository(RetrofitClient.getRetrofitPostApi(context = context))
+        PostRepository(RetrofitClient.getRetrofitPostApi(context = applicationContext))
     }
 
     val viewModel: PostViewModel = viewModel(
